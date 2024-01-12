@@ -26,7 +26,7 @@ type HitProps = {
 function Hit({ hit }: HitProps) {
   return (
     <>
-      <Highlight hit={hit} attribute="HEADWORD" className="Hit-label" />
+      
       <span className="Hit-price">${hit.ENGLISH_EQUIVALENT}</span>
     </>
   );
