@@ -4,11 +4,11 @@ import algoliasearch from 'algoliasearch/lite';
 import { Hit as AlgoliaHit } from 'instantsearch.js';
 import React from 'react';
 import {
-  Hits,
-  Highlight,
   SearchBox,
   RefinementList,
   DynamicWidgets,
+  useHits,
+  UseHitsProps,
 } from 'react-instantsearch';
 import { InstantSearchNext } from 'react-instantsearch-nextjs';
 
@@ -20,28 +20,52 @@ type HitProps = {
   hit: AlgoliaHit<{
     HEADWORD: string;
     ENGLISH_EQUIVALENT: string;
+    PART_OF_SPEECH: string;
+    TIER_DISPLAY: string;
+    FILENAME: string;
   }>;
 };
 
-function Hit({ hit }: HitProps) {
+function CustomHits(props: UseHitsProps) {
+  const { hits, sendEvent } = useHits(props);
+
   return (
-    <>
-      
-      <span className="Hit-price">${hit.ENGLISH_EQUIVALENT}</span>
-    </>
+    <table>
+            <thead>
+              <tr>
+                <th>Word</th>
+                <th>Translation</th>
+                <th>Part of speech</th>
+                <th>Tier</th>
+                <th>Download</th>
+              </tr>
+            </thead>
+            <tbody>
+              {hits.map((hit) => (
+                <tr>
+                <td><span className="Hit-headword">{hit.HEADWORD}</span></td>
+                <td><span className="Hit-english">{hit.ENGLISH_EQUIVALENT}</span></td>
+                <td><span className="Hit-part">{hit.PART_OF_SPEECH}</span></td>
+                <td><span className="Hit-tier">{hit.TIER_DISPLAY}</span></td>
+                <td><span className="Hit-part">{hit.FILENAME}</span></td>
+              </tr>
+              ))}
+            </tbody>
+          </table>
   );
 }
 
+
 export default function Search() {
   return (
-    <InstantSearchNext searchClient={client} indexName="instant_search" routing>
-      <div className="Container">
-        <div>
+    <InstantSearchNext searchClient={client} indexName="aqa-audio-files" routing>
+      <div className="Container row">
+        <div className="col col-xs-4">
+          <SearchBox />
           <DynamicWidgets fallbackComponent={FallbackComponent} />
         </div>
-        <div>
-          <SearchBox />
-          <Hits hitComponent={Hit} />
+        <div className="col col-xs-8">
+            <CustomHits />
         </div>
       </div>
     </InstantSearchNext>
