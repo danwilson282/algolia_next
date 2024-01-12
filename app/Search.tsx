@@ -14,20 +14,20 @@ import { InstantSearchNext } from 'react-instantsearch-nextjs';
 
 import { Panel } from '../components/Panel';
 
-const client = algoliasearch('latency', '6be0576ff61c053d5f9a3225e2a90f76');
+const client = algoliasearch('5E8H3EJ5AY', '402d8891ec371895bc566751725f5898');
 
 type HitProps = {
   hit: AlgoliaHit<{
-    name: string;
-    price: number;
+    HEADWORD: string;
+    ENGLISH_EQUIVALENT: string;
   }>;
 };
 
 function Hit({ hit }: HitProps) {
   return (
     <>
-      <Highlight hit={hit} attribute="name" className="Hit-label" />
-      <span className="Hit-price">${hit.price}</span>
+      <Highlight hit={hit} attribute="HEADWORD" className="Hit-label" />
+      <span className="Hit-price">${hit.ENGLISH_EQUIVALENT}</span>
     </>
   );
 }
