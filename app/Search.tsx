@@ -27,7 +27,7 @@ type HitProps = {
 };
 
 function CustomHits(props: UseHitsProps) {
-  const { hits, sendEvent } = useHits(props);
+  const { hits } = useHits(props);
 
   return (
     <table>
@@ -41,7 +41,7 @@ function CustomHits(props: UseHitsProps) {
               </tr>
             </thead>
             <tbody>
-              {hits.map((hit) => (
+              {hits.map((hit:any):React.ReactNode => (
                 <tr>
                 <td><span className="Hit-headword">{hit.HEADWORD}</span></td>
                 <td><span className="Hit-english">{hit.ENGLISH_EQUIVALENT}</span></td>
