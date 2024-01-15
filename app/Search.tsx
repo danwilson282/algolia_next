@@ -2,7 +2,8 @@
 
 import algoliasearch from 'algoliasearch/lite';
 import { Hit as AlgoliaHit } from 'instantsearch.js';
-import React from 'react';
+import React, {useRef} from 'react';
+import { FaVolumeUp, FaFileDownload } from "react-icons/fa";
 import {
   SearchBox,
   RefinementList,
@@ -61,26 +62,31 @@ function MenuSelect(props: UseMenuProps) {
 
 function CustomHits(props: UseHitsProps) {
   const { hits } = useHits(props);
-
+  function playAudio(url:string){
+    let a:HTMLAudioElement = document.getElementById('audio-player') as HTMLAudioElement
+    a.src = url
+    a.play()
+  }
+  const style = { color: "#1847BF", fontSize: "1.5em" }
   return (
-    <table>
+    <table className="table c-table">
             <thead>
               <tr>
-                <th>Word</th>
-                <th>Translation</th>
-                <th>Part of speech</th>
-                <th>Tier</th>
-                <th>Download</th>
+                <th style={{width:'20%'}}>Word</th>
+                <th style={{width:'20%'}}>Translation</th>
+                <th style={{width:'20%'}}>Part of speech</th>
+                <th style={{width:'20%'}}>Tier</th>
+                <th style={{width:'20%'}}>Download</th>
               </tr>
             </thead>
             <tbody>
               {hits.map((hit:AlgoliaHit):React.ReactNode => (
-              <tr className="js-audio" id={hit.FILENAME}>
-                <td><span className="Hit-headword">{hit.HEADWORD}</span></td>
+              <tr className="js-audio" id={hit.FILENAME} onClick={()=>playAudio(hit.FILENAME)}>
+                <td><span className="Hit-headword"><FaVolumeUp style={style}/> {hit.HEADWORD}</span></td>
                 <td><span className="Hit-english">{hit.ENGLISH_EQUIVALENT}</span></td>
                 <td><span className="Hit-part">{hit.PART_OF_SPEECH}</span></td>
                 <td><span className="Hit-tier">{hit.TIER_DISPLAY}</span></td>
-                <td><a href={hit.FILENAME} className="Hit-part">Download</a></td>
+                <td><a href={hit.FILENAME} className="Hit-part"><FaFileDownload style={style}/></a></td>
               </tr>
               ))}
             </tbody>
@@ -122,12 +128,11 @@ function CustomRefinementList(props: UseRefinementListProps) {
     </>
   );
 }
-
 export default function Search() {
   return (
     <InstantSearchNext searchClient={client} indexName="aqa-audio-files" routing>
       <div className="Container row">
-        <audio id="audio-player"></audio>
+        <audio id="audio-player" src="https://filestore.aqa.org.uk/media/GCSE_French/higher/AQA-8652-SF-arriver-arriver-à.mp3"></audio>
         <div className="col-xs col-xs-4 bg-grey-lightest">
         <SearchBox className="c-searchbox__field col-xs col-xs-12" placeholder="Search audio files" />
           <div className="c-modal--overlay__container">
@@ -256,10 +261,3 @@ export default function Search() {
   );
 }
 
-function FallbackComponent({ attribute }: { attribute: string }) {
-  return (
-    <Panel header={attribute}>
-      <RefinementList attribute={attribute} />
-    </Panel>
-  );
-}
