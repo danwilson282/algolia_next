@@ -44,7 +44,8 @@ function MenuSelect(props: UseMenuProps) {
     <select
       value={selectedValue}
       onChange={(event) => {
-        document.getElementById('clear')?.children[0].click()
+        let element: HTMLElement = document.getElementById('clear')?.children[0] as HTMLElement;
+        element.click()
         refine((event.target as HTMLSelectElement).value);
       }}
     >
@@ -193,22 +194,44 @@ export default function Search() {
                     <CustomRefinementList attribute="PART_OF_SPEECH"/>
                   </dd>
                 </div>
+                <div className="panel panel-default">
+                  <dt className="panel-heading">
+                    <span className="c-accordion__title c-accordion__title__btn is-expanded">Sort by:</span>
+                  </dt>
+                  <dd className="c-accordion__item is-scrollable is-expanded bg-color-white">
+                  <SortBy
+                    items={[
+                      { label: 'Word', value: 'headword_asc' },
+                      { label: 'Translation', value: 'trans_asc' },
+                      { label: 'Part of speech', value: 'part_asc' },
+                      { label: 'Tier', value: 'tier_asc' },
+                    ]}
+                  />
+                  </dd>
+                </div>
               </dl>
             </div>
             </div>
           </div>
           <ClearRefinements id="clear" style={{display:'none'}} includedAttributes={['A_PEOPLE_AND_LIFESTYLE', 'B_POPULAR_CULTURE', 'C_COMMUNICATION']}></ClearRefinements>
-          <SortBy
-            items={[
-              { label: 'Word', value: 'headword_asc' },
-              { label: 'Translation', value: 'trans_asc' },
-              { label: 'Part of speech', value: 'part_asc' },
-              { label: 'Tier', value: 'tier_asc' },
-            ]}
-          />
           
         </div>
         <div className="col col-xs-8">
+          <div className="row">
+            <div className="col-xs col-xs-6">
+              <Pagination/>
+            </div>
+            <div className="col-xs col-xs-6">
+              <HitsPerPage
+                items={[
+                { label: '10 hits per page', value: 10 },
+                { label: '20 hits per page', value: 20 },
+                { label: '50 hits per page', value: 50, default: true },
+                { label: '100 hits per page', value: 100 },
+                ]}
+              />
+            </div>
+          </div>
             <HitsPerPage
               items={[
                { label: '10 hits per page', value: 10 },
