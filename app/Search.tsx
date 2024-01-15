@@ -75,7 +75,7 @@ function CustomHits(props: UseHitsProps) {
             </thead>
             <tbody>
               {hits.map((hit:AlgoliaHit):React.ReactNode => (
-                <tr>
+              <tr className="js-audio" id={hit.FILENAME}>
                 <td><span className="Hit-headword">{hit.HEADWORD}</span></td>
                 <td><span className="Hit-english">{hit.ENGLISH_EQUIVALENT}</span></td>
                 <td><span className="Hit-part">{hit.PART_OF_SPEECH}</span></td>
@@ -127,6 +127,7 @@ export default function Search() {
   return (
     <InstantSearchNext searchClient={client} indexName="aqa-audio-files" routing>
       <div className="Container row">
+        <audio id="audio-player"></audio>
         <div className="col-xs col-xs-4 bg-grey-lightest">
         <SearchBox className="c-searchbox__field col-xs col-xs-12" placeholder="Search audio files" />
           <div className="c-modal--overlay__container">
@@ -232,16 +233,22 @@ export default function Search() {
               />
             </div>
           </div>
-            <HitsPerPage
-              items={[
-               { label: '10 hits per page', value: 10 },
-               { label: '20 hits per page', value: 20 },
-               { label: '50 hits per page', value: 50, default: true },
-               { label: '100 hits per page', value: 100 },
-              ]}
-            />
             <CustomHits />
-            <Pagination/>
+            <div className="row">
+            <div className="col-xs col-xs-6">
+              <Pagination/>
+            </div>
+            <div className="col-xs col-xs-6">
+              <HitsPerPage
+                items={[
+                { label: '10 hits per page', value: 10 },
+                { label: '20 hits per page', value: 20 },
+                { label: '50 hits per page', value: 50, default: true },
+                { label: '100 hits per page', value: 100 },
+                ]}
+              />
+            </div>
+          </div>
             
         </div>
       </div>
