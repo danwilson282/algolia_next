@@ -18,6 +18,7 @@ import {
   SortBy,
   Pagination,
   HitsPerPage,
+  Stats,
 } from 'react-instantsearch';
 import { InstantSearchNext } from 'react-instantsearch-nextjs';
 
@@ -134,12 +135,18 @@ export default function Search() {
       <div className="Container row">
         <audio id="audio-player" src="https://filestore.aqa.org.uk/media/GCSE_French/higher/AQA-8652-SF-arriver-arriver-à.mp3"></audio>
         <div className="col-xs col-xs-4 bg-grey-lightest">
-        <SearchBox className="c-searchbox__field col-xs col-xs-12" placeholder="Search audio files" />
+
+        <SearchBox classNames={{input: "c-searchbox__field col-xs col-xs-12"}} placeholder="Search audio files" />
           <div className="c-modal--overlay__container">
             <div className="c-accordion u-sm-p1-5">
               <div className="row">
                 <div className="col-xs u-mt1">
-                  <ClearRefinements></ClearRefinements>
+                  <ClearRefinements
+                  translations={{
+                    resetButtonText: 'Clear all filters',
+                  }}
+                  classNames={{button: 'c-btn c-btn--brand c-btn--full'}}
+                  ></ClearRefinements>
                 </div>
               </div>
             <div className="panel-group flb-panel">
@@ -225,7 +232,9 @@ export default function Search() {
         <div className="col col-xs-8">
           <div className="row">
             <div className="col-xs col-xs-6">
-              <Pagination/>
+              <Pagination
+                classNames={{root: 's-search c-pagination', list: '', item: 'c-pagination__list o-list-bare u-mb0', link: 'c-pagination__list__item__link'}}
+              />
             </div>
             <div className="col-xs col-xs-6">
               <HitsPerPage
@@ -235,13 +244,22 @@ export default function Search() {
                 { label: '50 hits per page', value: 50, default: true },
                 { label: '100 hits per page', value: 100 },
                 ]}
+                classNames={{root: '', select: 'c-form__select', option: ''}}
               />
             </div>
           </div>
-            <CustomHits />
+          <div className="row">
+            <Stats></Stats>
+          </div>
+          <div className="row">
+          <CustomHits />
+          </div>
+            
             <div className="row">
             <div className="col-xs col-xs-6">
-              <Pagination/>
+            <Pagination
+                classNames={{root: 's-search c-pagination', list: '', item: 'c-pagination__list o-list-bare u-mb0', link: 'c-pagination__list__item__link'}}
+              />
             </div>
             <div className="col-xs col-xs-6">
               <HitsPerPage
