@@ -19,12 +19,15 @@ import {
   Pagination,
   HitsPerPage,
   Stats,
+  useQueryRules,
+  UseQueryRulesProps,
 } from 'react-instantsearch';
 import { InstantSearchNext } from 'react-instantsearch-nextjs';
 
 import { Panel } from '../components/Panel';
 
 const client = algoliasearch('5E8H3EJ5AY', '402d8891ec371895bc566751725f5898');
+//const client = algoliasearch(process.env.APPLICATION_ID, process.env.SEARCH_KEY);
 
 type HitProps = {
   hit: AlgoliaHit<{
@@ -129,6 +132,24 @@ function CustomRefinementList(props: UseRefinementListProps) {
     </>
   );
 }
+
+function QueryRulesCustomData(props: UseQueryRulesProps) {
+  const { items } = useQueryRules(props);
+
+  return (
+    <>
+      {items.map(({ theme, title }) => (
+        <section key={title}>
+          <h2>{title}</h2>
+          <p>
+            Theme: <span className="color-brand-secondary">{theme}</span>
+          </p>
+        </section>
+      ))}
+    </>
+  );
+}
+
 export default function Search() {
   return (
     <InstantSearchNext searchClient={client} indexName="aqa-audio-files" routing>
@@ -252,6 +273,7 @@ export default function Search() {
             <Stats></Stats>
           </div>
           <div className="row">
+            <QueryRulesCustomData></QueryRulesCustomData>
           <CustomHits />
           </div>
             
