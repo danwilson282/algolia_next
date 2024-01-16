@@ -21,6 +21,8 @@ import {
   Stats,
   useQueryRules,
   UseQueryRulesProps,
+  useInstantSearch,
+  UseInstantSearchProps,
 } from 'react-instantsearch';
 import { InstantSearchNext } from 'react-instantsearch-nextjs';
 
@@ -150,6 +152,53 @@ function QueryRulesCustomData(props: UseQueryRulesProps) {
   );
 }
 
+function NoResultsBoundary({ children, fallback }:any) {
+  const { results } = useInstantSearch();
+
+  // The `__isArtificial` flag makes sure not to display the No Results message
+  // when no hits have been returned.
+  if (!results.__isArtificial && results.nbHits === 0) {
+    return (
+      <>
+        {fallback}
+        <div hidden>children</div>
+      </>
+    );
+  }
+
+  return children;
+}
+
+function NoResults() {
+  const { indexUiState } = useInstantSearch();
+
+  return (
+      <div className="row">
+          <div className="col-xs col-xs-12 col-md-12 col-lg-12 col-xlg-12">
+              <div className="c-panel c-panel--bare bg-grey-lightest">
+                  <h3 className="c-panel__header u-pt0">No matches found in our vocabulary list</h3>
+                  <div className="c-panel__content">
+                      <p>
+                          Your search for <strong>{indexUiState.query}</strong> did not yield any results
+                      </p>
+                      <p>
+                          Try one of the following:
+                      </p>
+                      <ul>
+                          <li>Try synonyms for your word</li>
+                          <li>Use a filter to check a complete topic of vocabulary words</li>
+                          <li>Try using our <a className="color-brand-secondary" href="https://filestore.aqa.org.uk/resources/french/AQA-8652FH-SSV.XLSX">interactive spreadsheet</a> to find your word</li>
+                          <li>Get in touch with a French subject expert at <a className="color-brand-secondary" href="mailto:mfl@aqa.org.uk">mfl@aqa.org.uk</a>
+                          </li>
+                      </ul>
+
+                  </div>
+              </div>
+          </div>
+      </div>
+  );
+}
+
 export default function Search() {
   return (
     <InstantSearchNext searchClient={client} indexName="aqa-audio-files" routing>
@@ -251,6 +300,9 @@ export default function Search() {
           
         </div>
         <div className="col col-xs-8">
+          
+
+          <NoResultsBoundary fallback={<NoResults />}>
           <div className="row">
             <div className="col-xs col-xs-6">
               <Pagination
@@ -274,10 +326,10 @@ export default function Search() {
           </div>
           <div className="row">
             <QueryRulesCustomData></QueryRulesCustomData>
-          <CustomHits />
-          </div>
+            <CustomHits />
             
-            <div className="row">
+          </div>
+          <div className="row">
             <div className="col-xs col-xs-6">
             <Pagination
                 classNames={{root: 's-search c-pagination', list: '', item: 'c-pagination__list o-list-bare u-mb0', link: 'c-pagination__list__item__link'}}
@@ -294,6 +346,9 @@ export default function Search() {
               />
             </div>
           </div>
+          </NoResultsBoundary>
+            
+            
             
         </div>
       </div>
