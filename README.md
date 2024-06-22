@@ -16,3 +16,5 @@ yarn run dev
 ```
 
 Read more about React InstantSearchNext [in our documentation](https://www.algolia.com/doc/guides/building-search-ui/going-further/server-side-rendering/react/#app-router-experimental).
+
+Change the readme file ready for PR
